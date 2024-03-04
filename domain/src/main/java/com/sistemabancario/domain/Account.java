@@ -75,6 +75,7 @@ public class Account extends Entity {
 
     public void updateLimit(int amount) {
         this.limit = amount;
+        this.updatedAt = Instant.now();
     }
 
     public void withdraw(int amount) {

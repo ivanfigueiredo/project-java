@@ -87,5 +87,3 @@ update-account-limit e71b4579-888a-4e33-add1-084942a4f793 400
 ```
 Paulo Ricardo -> Paulo_Ricardo
 ```
-
-## Diagrama de Classes
