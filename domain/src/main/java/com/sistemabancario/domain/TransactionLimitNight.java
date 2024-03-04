@@ -1,5 +1,7 @@
 package com.sistemabancario.domain;
 
+import com.sistemabancario.domain.exceptions.DomainException;
+
 import java.util.Optional;
 
 public class TransactionLimitNight implements TransactionLimitHandler {
@@ -17,6 +19,6 @@ public class TransactionLimitNight implements TransactionLimitHandler {
         if (transaction.isNight()) {
             return TRANSACTION_LIMIT_NIGHT;
         }
-        return this.next.orElseThrow().handle(transaction);
+        return this.next.orElseThrow(() -> new DomainException("Invalid chain")).handle(transaction);
     }
 }

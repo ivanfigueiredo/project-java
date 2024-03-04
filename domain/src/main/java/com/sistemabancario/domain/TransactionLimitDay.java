@@ -1,10 +1,11 @@
 package com.sistemabancario.domain;
 
+import com.sistemabancario.domain.exceptions.DomainException;
+
 import java.util.Optional;
 
 public class TransactionLimitDay implements TransactionLimitHandler {
-    private final int TRANSACTION_LIMIT_DAY = 2000;
-    private Optional<TransactionLimitHandler> next = null;
+    private Optional<TransactionLimitHandler> next = Optional.empty();
 
     public TransactionLimitDay(final Optional<TransactionLimitHandler> next) {
         this.next = next;
@@ -14,9 +15,10 @@ public class TransactionLimitDay implements TransactionLimitHandler {
 
     @Override
     public int handle(Transaction transaction) {
+        final int TRANSACTION_LIMIT_DAY = 2000;
         if (transaction.isDay()) {
-            return this.TRANSACTION_LIMIT_DAY;
+            return TRANSACTION_LIMIT_DAY;
         }
-        return this.next.orElseThrow().handle(transaction);
+        return this.next.orElseThrow(() -> new DomainException("Invalid chain")).handle(transaction);
     }
 }
