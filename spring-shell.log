@@ -1,0 +1,30 @@
+1709339201091:5
+1709339238095:create-account
+1709339678972:create-account --max 10
+1709341130272:create-account name=Ivan Figueiredo email=teste@gmailcom birthDate=1986/12/30 agencyNumber=6688989 limit=1200 balance=2000 accountType=1
+1709341198279:create-account name=Ivan Figueiredo email=teste@gmailcom birthDate=1986/12/30 agencyNumber="6688989" limit=1200 balance=2000 accountType=1
+1709341226281:create-account name=Ivan Figueiredo email=teste@gmailcom birthDate=1986/12/30 agencyNumber=6688989 limit=1200 balance=2000 accountType=1
+1709341370298:create-account name=Ivan Figueiredo email=teste@gmailcom birthDate=1986/12/30 limit=1200 balance=2000 accountType=1
+1709341444309:create-account name=Ivan Figueiredo email=teste@gmailcom birthDate=1986/12/30 agencyNumber=6688989 limit=1200 balance=2000 accountType=1
+1709341483314:create-account name=Ivan Figueiredo email=teste@gmailcom birthDate=1986/12/30 agencyNumber="6688989" limit=1200 balance=2000 accountType=1
+1709341678340:create-account name=Ivan Figueiredo email=teste@gmailcom birthDate=1986/12/30
+1709341716345:create-account --name=Ivan Figueiredo --email=teste@gmailcom
+1709341735348:create-account --name=Ivan Figueiredo email=teste@gmailcom birthDate=1986/12/30
+1709341745350:create-account name=Ivan Figueiredo email=teste@gmailcom birthDate=1986/12/30
+1709341753350:create-account
+1709342549474:create-account --accountType=1
+1709342791507:create-account accountType=1
+1709342800510:StringInput component = new StringInput(getTerminal(), "Enter value", "myvalue");
+1709342800516:component.setResourceLoader(getResourceLoader());
+1709342800520:component.setTemplateExecutor(getTemplateExecutor());
+1709342800522:if (mask) {
+1709342800525:component.setMaskCharacter('*');
+1709342800526:}
+1709342800530:StringInputContext context = component.run(StringInputContext.empty());
+1709342842516:return "Got value " + context.getResultValue();create-account --name=Ivan Figueiredo
+1709342889522:create-account name=Ivan Figueiredo
+1709342933529:create-account Ivan_Figueiredo teste@gmail.com
+1709343260812:ls -lhs
+1709343327828:create-account Ivan_Figueiredo teste@gmail.com 1986/12/30 88898989 1500 1000 2
+1709344897700:help
+1709346363834:transaction-withdraw e71b4579-888a-4e33-add1-084942a4f793 100

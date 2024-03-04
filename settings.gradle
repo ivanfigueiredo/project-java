@@ -1,0 +1,5 @@
+rootProject.name = 'SistemaBancario'
+include 'domain'
+include 'application'
+include 'infra'
+
