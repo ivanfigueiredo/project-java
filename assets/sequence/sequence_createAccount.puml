@@ -1,0 +1,17 @@
+@startuml
+!theme C4_united from https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/themes
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
+
+System(primaryActor, "CLI - API", "")
+System(application, "Application", "")
+System(db, "database", "")
+
+activate primaryActor
+
+Rel(primaryActor, application, "Uses")
+deactivate primaryActor
+activate application
+Rel(application, db, "Uses")
+activate db
+deactivate db
+@enduml

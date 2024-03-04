@@ -1,0 +1,22 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Component(cli, "CLI", "", $techn="CLI - Command Line Interface")
+Component(api, "API", "", $techn="API - Application Programing Interface")
+Component(test, "Test", "", $techn="")
+ContainerDb(db, "Database")
+
+Container_Boundary(application, "Application") {
+ Component(createAccount, "CreateAccount", "execute")
+ Component(account, "AccountDomain", "create")
+ Component(accountRepository, "AccountRepository", "save")
+
+ Rel(createAccount, account, "Uses")
+ Rel(createAccount, accountRepository, "Uses")
+}
+
+Rel(accountRepository, db, "Uses")
+Rel(cli, createAccount, "Uses")
+Rel(api, createAccount, "Uses")
+Rel(test, createAccount, "Uses")
+@enduml
