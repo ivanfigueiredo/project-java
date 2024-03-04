@@ -1,0 +1,29 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define osaPuml https://raw.githubusercontent.com/Crashedmind/PlantUML-opensecurityarchitecture2-icons/master
+!include osaPuml/Common.puml
+!include osaPuml/User/all.puml
+
+!include <office/Servers/application_server>
+!include <office/Concepts/service_application>
+
+AddPersonTag("spa", $sprite="osa_user_large_group,color=red", $legendSprite="osa_user_audit,scale=0.25", $legendText="SPA - Single Page Application")
+AddPersonTag("cli", $sprite="osa_user_large_group,color=green", $legendSprite="osa_user_audit,scale=0.25", $legendText="CLI - Command Line Interface")
+
+AddContainerTag("conAPI", $sprite="api", $legendText="API")
+
+Person(spa, "SPA - Single Page Application", $tags="spa")
+Person(cli, "CLI - Command Line Interface", $tags="cli")
+
+ContainerDb(db, "Database")
+
+System_Boundary(c1, "Banking System"){
+    Container(api, "API", "", $tags="conAPI")
+}
+
+Rel(cli, api, "Uses")
+Rel(spa, api, "Uses")
+Rel(api, db, "Uses")
+
+@enduml

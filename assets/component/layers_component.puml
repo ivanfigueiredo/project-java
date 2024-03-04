@@ -1,0 +1,10 @@
+@startuml
+component [application]
+component [domain]
+component [infra (interface adapter)]
+component [infra (frameworkd & drivers)]
+[domain] --> [domain]
+[application] --> [domain]
+[application] --> [infra (frameworkd & drivers)]
+[infra (interface adapter)] --> [application]
+@enduml
