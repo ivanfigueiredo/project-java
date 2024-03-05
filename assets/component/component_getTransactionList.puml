@@ -6,7 +6,7 @@ Component(api, "API", "", $techn="API - Application Programing Interface")
 ContainerDb(db, "Database")
 
 Container_Boundary(application, "Application") {
- Component(query, "Query DAO", "getAccount")
+ Component(query, "Query DAO", "listTransaction")
 }
 
 Rel(query, db, "Uses")
