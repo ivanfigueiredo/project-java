@@ -1,7 +1,9 @@
 package com.sistemabancario.application;
 
 import com.sistemabancario.application.dto.UpdateAccountLimitDto;
+import com.sistemabancario.application.exceptions.NotFoundException;
 import com.sistemabancario.domain.Account;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -62,5 +64,22 @@ public class UpdateAccountLimitTest {
                         && Objects.isNull(Transaction.getAccountIdTarget())
                         && Objects.nonNull(Transaction.getCreatedAt())
         ));
+    }
+
+
+    @Test
+    public void shouldNotUpdateAAccountLimitIfAccountNotExists() {
+        final var accountId = UUID.randomUUID().toString();
+        final var newLimit = 200;
+
+        final var dto = new UpdateAccountLimitDto(accountId, newLimit);
+
+        final var expectedMessage = "Account not found";
+
+        final var exception = Assertions.assertThrows(NotFoundException.class, () -> useCase.execute(dto));
+
+        verify(accountRepository, times(1)).findAccountById(eq(accountId));
+
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
 }
