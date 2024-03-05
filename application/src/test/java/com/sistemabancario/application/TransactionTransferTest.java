@@ -55,12 +55,12 @@ public class TransactionTransferTest {
 
         useCase.execute(dto);
 
-        verify(accountRepository, times(1)).findAccountById(accountFrom.getAccountId());
-        verify(accountRepository, times(1)).findAccountById(accountTo.getAccountId());
+         verify(accountRepository, times(1)).findAccountById(accountFrom.getAccountId());
+         verify(accountRepository, times(1)).findAccountById(accountTo.getAccountId());
 
         Mockito.verify(accountRepository, times(1)).updateMany(argThat(Accounts ->
                 Objects.equals(balance - amount, Arrays.stream(Accounts).toList().get(0).getBalance())
-                        && Objects.equals(balance + amount, Arrays.stream(Accounts).toList().get(1).getBalance())
+                && Objects.equals(balance + amount, Arrays.stream(Accounts).toList().get(1).getBalance())
         ));
 
         Mockito.verify(transactionRepository, times(1)).save(argThat(Transaction ->
@@ -75,5 +75,23 @@ public class TransactionTransferTest {
                         && Objects.equals(Transaction.getAccountIdTarget(), accountTo.getAccountId())
                         && Objects.nonNull(Transaction.getCreatedAt())
         ));
+    }
+
+
+    @Test
+    public void shouldNotTransactionTransferAccountFromNotExists() {
+        final var accountIdFrom = UUID.randomUUID().toString();
+        final var accountIdTo = UUID.randomUUID().toString();
+        final var newLimit = 200;
+
+        final var dto = new TransactionTransferDto(accountIdFrom, accountIdTo, newLimit);
+
+        final var expectedMessage = "AccountFrom not found";
+
+        final var exception = Assertions.assertThrows(NotFoundException.class, () -> useCase.execute(dto));
+
+        verify(accountRepository, times(1)).findAccountById(eq(accountIdFrom));
+
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
 }
