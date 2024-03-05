@@ -67,4 +67,23 @@ public class CreateAccountTest {
                         && Objects.nonNull(Account.getUpdatedAt())
         ));
     }
+
+
+    @Test
+    public void shouldThrowClientNotFoundIfClientNotExists() {
+        final var expectedAgencyNumber = "88745472";
+        final var expectedLimit = 500;
+        final var expectedBalance = 1000;
+        final var expectedAccountType = 1;
+        final var expectedClientId = UUID.randomUUID().toString();
+        final var dto = new CreateAccountDto(expectedClientId, expectedAgencyNumber, expectedLimit, expectedBalance, expectedAccountType);
+
+        final var expectedMessage = "Client not found";
+
+        final var exception = Assertions.assertThrows(NotFoundException.class, () -> useCase.execute(dto));
+
+        verify(clientRepository, times(1)).findClientById(eq(expectedClientId));
+
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
+    }
 }
