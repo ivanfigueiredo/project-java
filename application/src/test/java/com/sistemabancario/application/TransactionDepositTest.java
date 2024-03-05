@@ -68,4 +68,21 @@ public class TransactionDepositTest {
                         && Objects.nonNull(Transaction.getCreatedAt())
         ));
     }
+
+
+    @Test
+    public void shouldNotTransactionDepositIfAccountNotExists() {
+        final var accountId = UUID.randomUUID().toString();
+        final var newLimit = 200;
+
+        final var dto = new TransactionDepositDto(accountId, newLimit);
+
+        final var expectedMessage = "Account not found";
+
+        final var exception = Assertions.assertThrows(NotFoundException.class, () -> useCase.execute(dto));
+
+        verify(accountRepository, times(1)).findAccountById(eq(accountId));
+
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
+    }
 }
