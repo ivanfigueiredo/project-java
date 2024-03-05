@@ -39,13 +39,17 @@ public class CommandLineInterface {
             @ShellOption(defaultValue = "2000/10/05") String birthDate,
             @ShellOption(defaultValue = "88845712466") String cpf
     ) {
-        String[] editName = name.split("_");
-        String newName = editName[0] + " " + editName[1];
-        final CreateClientDto createClientDto = new CreateClientDto(newName,
-                email,
-                birthDate,
-                cpf);
-        this.createClient.execute(createClientDto);
+        try {
+            String[] editName = name.split("_");
+            String newName = editName[0] + " " + editName[1];
+            final CreateClientDto createClientDto = new CreateClientDto(newName,
+                    email,
+                    birthDate,
+                    cpf);
+            this.createClient.execute(createClientDto);
+        } catch (final RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @ShellMethod(key = "create-account", value = "Create Account", group = "Component")
@@ -56,12 +60,16 @@ public class CommandLineInterface {
             @ShellOption(defaultValue = "500") Integer balance,
             @ShellOption(defaultValue = "1") Integer accountType
     ) {
-        final CreateAccountDto createAccountDto = new CreateAccountDto(clientId,
-                agencyNumber,
-                limit,
-                balance,
-                accountType);
-        this.createAccount.execute(createAccountDto);
+        try {
+            final CreateAccountDto createAccountDto = new CreateAccountDto(clientId,
+                    agencyNumber,
+                    limit,
+                    balance,
+                    accountType);
+            this.createAccount.execute(createAccountDto);
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @ShellMethod(key = "update-account-limit", value = "Update Account Limit", group = "Component")
@@ -69,8 +77,12 @@ public class CommandLineInterface {
             @ShellOption(defaultValue = "accountId") String accountId,
             @ShellOption(defaultValue = "1000") Integer limit
     ) {
-        final UpdateAccountLimitDto updateAccountLimitDto = new UpdateAccountLimitDto(accountId, limit);
-        this.updateAccountLimit.execute(updateAccountLimitDto);
+        try {
+            final UpdateAccountLimitDto updateAccountLimitDto = new UpdateAccountLimitDto(accountId, limit);
+            this.updateAccountLimit.execute(updateAccountLimitDto);
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @ShellMethod(key = "transaction-deposit", value = "Transaction Deposit", group = "Component")
@@ -78,8 +90,12 @@ public class CommandLineInterface {
             @ShellOption(defaultValue = "accountId") String accountId,
             @ShellOption(defaultValue = "1000") Integer amount
     ) {
-        final TransactionDepositDto transactionDepositDto = new TransactionDepositDto(accountId, amount);
-        this.transactionDeposit.execute(transactionDepositDto);
+        try {
+            final TransactionDepositDto transactionDepositDto = new TransactionDepositDto(accountId, amount);
+            this.transactionDeposit.execute(transactionDepositDto);
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @ShellMethod(key = "transaction-withdraw", value = "Transaction Withdraw", group = "Component")
@@ -87,8 +103,12 @@ public class CommandLineInterface {
             @ShellOption(defaultValue = "accountId") String accountId,
             @ShellOption(defaultValue = "1000") Integer amount
     ) {
-        final TransactionWithdrawDto transactionWithdrawDto = new TransactionWithdrawDto(accountId, amount);
-        this.transactionWithdraw.execute(transactionWithdrawDto);
+        try {
+            final TransactionWithdrawDto transactionWithdrawDto = new TransactionWithdrawDto(accountId, amount);
+            this.transactionWithdraw.execute(transactionWithdrawDto);
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @ShellMethod(key = "transaction-transfer", value = "Transaction Transfer", group = "Component")
@@ -97,7 +117,11 @@ public class CommandLineInterface {
             @ShellOption(defaultValue = "accountTo") String accountIdTo,
             @ShellOption(defaultValue = "1000") Integer amount
     ) {
-        final TransactionTransferDto transactionTransferDto = new TransactionTransferDto(accountIdFrom, accountIdTo, amount);
-        this.transactionTransfer.execute(transactionTransferDto);
+        try {
+            final TransactionTransferDto transactionTransferDto = new TransactionTransferDto(accountIdFrom, accountIdTo, amount);
+            this.transactionTransfer.execute(transactionTransferDto);
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
     }
 }
