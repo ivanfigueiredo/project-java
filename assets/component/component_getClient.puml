@@ -1,0 +1,18 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Component(cli, "CLI", "", $techn="CLI - Command Line Interface")
+Component(api, "API", "", $techn="API - Application Programing Interface")
+ContainerDb(db, "Database")
+
+Container_Boundary(application, "Application") {
+ Component(createClient, "CreateClient", "execute")
+ Component(query, "Query DAO", "getClient")
+
+ Rel(createClient, query, "Uses")
+}
+
+Rel(query, db, "Uses")
+Rel(cli, createClient, "Uses")
+Rel(api, createClient, "Uses")
+@enduml
