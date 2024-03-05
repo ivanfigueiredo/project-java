@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
 
-public record ListAccountsOutputDto(
+public record   ListAccountsOutputDto(
        @JsonProperty("accountId") String accountId,
        @JsonProperty("clientId") String clientId,
        @JsonProperty("agencyNumber") String agencyNumber,

@@ -1,0 +1,30 @@
+@startuml
+!theme C4_united from https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/themes
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
+
+System(primaryActor, "CLI - API")
+System(application, "Application")
+System(db, "database")
+
+activate primaryActor
+
+Rel(primaryActor, application, "Uses")
+deactivate primaryActor
+activate application
+Rel(application, db, "Uses - [getClient]")
+alt successful case
+    activate db
+    Rel(db, application, "Return - [DTO]")
+    deactivate db
+    activate application
+    Rel(application, primaryActor, "Response")
+    deactivate application
+else some find of failure
+    activate db
+    Rel(db, application, "Return - [NULL]")
+    deactivate db
+    activate application
+    Rel(application, primaryActor, "Throw Not Found")
+    deactivate application
+end
+@enduml
