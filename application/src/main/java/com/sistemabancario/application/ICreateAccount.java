@@ -1,7 +1,8 @@
 package com.sistemabancario.application;
 
 import com.sistemabancario.application.dto.CreateAccountDto;
+import com.sistemabancario.application.dto.CreateAccountOutputDto;
 
 public interface ICreateAccount {
-    public void execute(CreateAccountDto dto);
+    public CreateAccountOutputDto execute(CreateAccountDto dto);
 }

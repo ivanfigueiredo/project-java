@@ -12,6 +12,7 @@ public class CreateClient implements ICreateClient {
     public CreateClient(final IClientRepository clientRepository) {
         this.clientRepository = Objects.requireNonNull(clientRepository);
     }
+
     @Override
     public CreateClientOutputDto execute(CreateClientDto dto) {
         Client client = Client.create(dto.name, dto.email, dto.birthDate, dto.cpf);

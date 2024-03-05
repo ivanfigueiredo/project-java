@@ -57,6 +57,10 @@ create-account: Create Account
 create-client: Create Client
 transaction-deposit: Transaction Deposit
 update-account-limit: Update Account Limit
+getAccount: Account Detail
+getClient: Client Detail
+list-transactions: List Transactions
+list-accounts: List Accounts
 ```
 
 2. Os Components correspondem aos recursos disponíveis
@@ -80,6 +84,18 @@ transaction-transfer e71b4579-888a-4e33-add1-084942a4f793 a2014579-888a-4e33-add
 ```
 ``` Shell
 update-account-limit e71b4579-888a-4e33-add1-084942a4f793 400
+```
+```Shell
+getAccount ddd6ef1d-35fe-4a69-8fe0-6de8ba023573
+```
+```Shell
+getClient ddd6ef1d-35fe-4a69-8fe0-6de8ba023573
+```
+```Shell
+list-transactions ddd6ef1d-35fe-4a69-8fe0-6de8ba023573
+```
+```Shell
+list-accounts ddd6ef1d-35fe-4a69-8fe0-6de8ba023573
 ```
 
 4. Observação: Para nome e sobrenome, juntar os dois separando por "_". Exemplo:

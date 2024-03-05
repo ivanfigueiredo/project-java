@@ -6,6 +6,7 @@ import com.sistemabancario.application.dto.CreateAccountDto;
 import com.sistemabancario.application.dto.UpdateAccountLimitDto;
 import com.sistemabancario.infra.input.CreateAccountInput;
 import com.sistemabancario.infra.input.UpdateAccountLimitInput;
+import com.sistemabancario.infra.output.CreateAccountOutputDto;
 import com.sistemabancario.infra.output.GetAccountOutputDto;
 import com.sistemabancario.infra.output.UpdateAccountLimitOutputDto;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class AccountController implements IAccountAPI {
     }
 
     @Override
-    public void createAccount(final CreateAccountInput input) {
+    public ResponseEntity<CreateAccountOutputDto> createAccount(final CreateAccountInput input) {
         final var dto = new CreateAccountDto(
                 input.clientId(),
                 input.agencyNumber(),
@@ -41,7 +42,9 @@ public class AccountController implements IAccountAPI {
                 input.balance(),
                 input.accountType()
         );
-        this.createAccount.execute(dto);
+        final var output = this.createAccount.execute(dto);
+
+        return new ResponseEntity<>(new CreateAccountOutputDto(output.accountId), HttpStatus.CREATED);
     }
 
     @Override
