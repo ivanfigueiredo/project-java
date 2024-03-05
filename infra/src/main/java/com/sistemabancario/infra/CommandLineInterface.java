@@ -17,19 +17,22 @@ public class CommandLineInterface {
     private final ITransactionWithdraw transactionWithdraw;
     private final ITransactionTransfer transactionTransfer;
     private final IUpdateAccountLimit updateAccountLimit;
+    private final IQuery query;
 
     public CommandLineInterface(final ICreateAccount createAccount,
                                 final ITransactionDeposit transactionDeposit,
                                 final ITransactionWithdraw transactionWithdraw,
                                 final ITransactionTransfer transactionTransfer,
                                 final IUpdateAccountLimit updateAccountLimit,
-                                final ICreateClient createClient) {
+                                final ICreateClient createClient,
+                                final IQuery query) {
         this.createAccount = Objects.requireNonNull(createAccount);
         this.transactionDeposit = Objects.requireNonNull(transactionDeposit);
         this.transactionWithdraw = Objects.requireNonNull(transactionWithdraw);
         this.transactionTransfer = Objects.requireNonNull(transactionTransfer);
         this.updateAccountLimit = Objects.requireNonNull(updateAccountLimit);
         this.createClient = Objects.requireNonNull(createClient);
+        this.query = Objects.requireNonNull(query);
     }
 
     @ShellMethod(key = "create-client", value = "Create Client", group = "Component")
@@ -46,7 +49,9 @@ public class CommandLineInterface {
                     email,
                     birthDate,
                     cpf);
-            this.createClient.execute(createClientDto);
+            final var output = this.createClient.execute(createClientDto);
+            final var response = String.format("\nClientId: %s", output.clientId);
+            System.out.println(response);
         } catch (final RuntimeException e) {
             System.err.println(e.getMessage());
         }
@@ -66,7 +71,9 @@ public class CommandLineInterface {
                     limit,
                     balance,
                     accountType);
-            this.createAccount.execute(createAccountDto);
+            final var output = this.createAccount.execute(createAccountDto);
+            final var response = String.format("\nAccountId: %s", output.accountId);
+            System.out.println(response);
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
         }
@@ -79,7 +86,9 @@ public class CommandLineInterface {
     ) {
         try {
             final UpdateAccountLimitDto updateAccountLimitDto = new UpdateAccountLimitDto(accountId, limit);
-            this.updateAccountLimit.execute(updateAccountLimitDto);
+            final var output = this.updateAccountLimit.execute(updateAccountLimitDto);
+            final var response = String.format("\nAccountId: %s\nLimit: %d", output.accountId, output.limit);
+            System.out.println(response);
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
         }
@@ -120,6 +129,97 @@ public class CommandLineInterface {
         try {
             final TransactionTransferDto transactionTransferDto = new TransactionTransferDto(accountIdFrom, accountIdTo, amount);
             this.transactionTransfer.execute(transactionTransferDto);
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @ShellMethod(key = "getAccount", value = "Account Detail", group = "Component")
+    public void getAccount(
+            @ShellOption(defaultValue = "accountId") String accountId
+    ) {
+        try {
+            final var output = this.query.getAccount(accountId);
+            final var response = String.
+                    format("\nAccountId: %s\nClientId: %s\nAccountNumber: %s\nAgencyNumber: %s\nAccountType: %s\nBalance: %d\nLimit: %d\n",
+                            output.accountId(),
+                            output.clientId(),
+                            output.accountNumber(),
+                            output.agencyNumber(),
+                            output.accountType(),
+                            output.balance(),
+                            output.limit()
+                    );
+            System.out.println(response);
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @ShellMethod(key = "getClient", value = "Client Detail", group = "Component")
+    public void getClient(
+            @ShellOption(defaultValue = "clientId") String clientId
+    ) {
+        try {
+            final var output = this.query.getClient(clientId);
+            final var response = String.
+                    format("\nClientId: %s\nName: %s\nEmail: %s\nCPF: %s\nBirthDate: %s",
+                            output.clientId(),
+                            output.name(),
+                            output.email(),
+                            output.cpf(),
+                            output.birthDate()
+                    );
+            System.out.println(response);
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @ShellMethod(key = "list-transactions", value = "List Transactions", group = "Component")
+    public void listTransactions(
+            @ShellOption(defaultValue = "accountId") String accountId
+    ) {
+        try {
+            final var output = this.query.listTransactions(accountId);
+            for (var item: output) {
+                final var response = String.
+                        format("\nTransactionId: %s\nAccountId: %s\nClientId: %s\nTransactionType: %s\nBalance: %d\nAmount: %d\nOwner: %s\nAccountIdTarget: %s",
+                                item.transactionId(),
+                                item.accountId(),
+                                item.clientId(),
+                                item.transactionType(),
+                                item.balance(),
+                                item.amount(),
+                                item.owner(),
+                                item.accountIdTarget().orElse("NULL")
+                        );
+                System.out.println(response);
+            }
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @ShellMethod(key = "list-accounts", value = "List Accounts", group = "Component")
+    public void listAccounts(
+            @ShellOption(defaultValue = "clientId") String clientId
+    ) {
+        try {
+            final var output = this.query.listAccounts(clientId);
+            for (var item: output) {
+                final var response = String.
+                        format("\nAccountId: %s\nClientId: %s\nAccountNumber: %s\nAgencyNumber: %s\nAccountType: %s\nBalance: %d\nLimit: %d\n",
+                                item.accountId(),
+                                item.clientId(),
+                                item.accountNumber(),
+                                item.agencyNumber(),
+                                item.accountType(),
+                                item.balance(),
+                                item.limit()
+                        );
+                System.out.println(response);
+            }
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
         }
