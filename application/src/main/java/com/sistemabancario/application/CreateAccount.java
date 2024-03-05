@@ -1,6 +1,7 @@
 package com.sistemabancario.application;
 
 import com.sistemabancario.application.dto.CreateAccountDto;
+import com.sistemabancario.application.dto.CreateAccountOutputDto;
 import com.sistemabancario.application.exceptions.NotFoundException;
 import com.sistemabancario.domain.Account;
 import com.sistemabancario.domain.Client;
@@ -21,12 +22,14 @@ public class CreateAccount implements ICreateAccount {
     }
 
     @Override
-    public void execute(CreateAccountDto dto) {
+    public CreateAccountOutputDto execute(final CreateAccountDto dto) {
         try {
             Client client = this.clientRepository.findClientById(dto.clientId)
                     .orElseThrow(() -> new NotFoundException("Client not found"));
             Account account = Account.create(client.getClientId(), dto.agencyNumber, dto.limit, dto.balance, dto.accountType);
             this.accountRepository.save(account);
+
+            return new CreateAccountOutputDto(account.getAccountId());
         } catch (InternalServerErrorException e) {
             throw e;
         }
