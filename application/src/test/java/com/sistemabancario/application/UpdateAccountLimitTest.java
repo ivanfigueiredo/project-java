@@ -1,2 +1,24 @@
-package com.sistemabancario.application;public class UpdateAccountLimitTest {
+package com.sistemabancario.application;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
+public class UpdateAccountLimitTest {
+
+    @InjectMocks
+    private UpdateAccountLimit useCase;
+
+    @Mock
+    private IAccountRepository accountRepository;
+
+    @Mock
+    private ITransactionRepository transactionRepository;
+
+
+    @Test
+    public
 }
