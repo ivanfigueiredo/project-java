@@ -94,4 +94,32 @@ public class TransactionTransferTest {
 
         Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
+
+
+    @Test
+    public void shouldNotTransactionTransferAccountToNotExists() {
+        final var clientId = UUID.randomUUID().toString();
+        final var agencyNumber = "4445547";
+        final var limit = 500;
+        final var balance = 1000;
+        final var accountType = 1;
+        final Account accountFrom = Account.create(clientId, agencyNumber, limit, balance, accountType);
+
+        final var accountIdTo = UUID.randomUUID().toString();
+        final var newLimit = 200;
+
+        final var dto = new TransactionTransferDto(accountFrom.getAccountId(), accountIdTo, newLimit);
+
+        when(accountRepository.findAccountById(eq(accountFrom.getAccountId())))
+                .thenReturn(Optional.of(accountFrom));
+
+        final var expectedMessage = "AccountTo not found";
+
+        final var exception = Assertions.assertThrows(NotFoundException.class, () -> useCase.execute(dto));
+
+        verify(accountRepository, times(1)).findAccountById(eq(accountFrom.getAccountId()));
+        verify(accountRepository, times(1)).findAccountById(eq(accountIdTo));
+
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
+    }
 }
