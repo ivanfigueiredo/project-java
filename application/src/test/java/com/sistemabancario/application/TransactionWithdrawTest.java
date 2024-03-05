@@ -68,4 +68,21 @@ public class TransactionWithdrawTest {
                         && Objects.nonNull(Transaction.getCreatedAt())
         ));
     }
+
+
+    @Test
+    public void shouldNotTransactionWithdrawIfAccountNotExists() {
+        final var accountId = UUID.randomUUID().toString();
+        final var newLimit = 200;
+
+        final var dto = new TransactionWithdrawDto(accountId, newLimit);
+
+        final var expectedMessage = "Account not found";
+
+        final var exception = Assertions.assertThrows(NotFoundException.class, () -> useCase.execute(dto));
+
+        verify(accountRepository, times(1)).findAccountById(eq(accountId));
+
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
+    }
 }
