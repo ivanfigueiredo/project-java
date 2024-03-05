@@ -1,0 +1,29 @@
+@startuml
+!theme C4_united from https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/themes
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
+
+System(primaryActor, "CLI - API", "")
+System(application, "Application", "")
+System(db, "database", "")
+
+activate primaryActor
+
+Rel(primaryActor, application, "Uses")
+deactivate primaryActor
+activate application
+Rel(application, db, "Transactions - [findAllById]")
+alt successful case
+    activate db
+    Rel(db, application, "Return [Entity]")
+    activate application
+    Rel(application, primaryActor, "List [Transactions]")
+    deactivate application
+else some find of failure
+    activate db
+    Rel(db, application, "Return - []")
+    deactivate db
+    activate application
+    Rel(application, primaryActor, "Return - []")
+    deactivate application
+end
+@enduml
